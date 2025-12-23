@@ -21,7 +21,7 @@
         .text-light-primary { color: #d1c4e9; }
     </style>
 </head>
-<body class="bg-gray-100 h-screen w-screen overflow-hidden">
+<body class="bg-gray-100 h-[100dvh] w-screen overflow-hidden">
 
     <!-- Login Screen -->
     <section id="login-screen" class="h-full w-full flex items-center justify-center bg-gray-50">
@@ -69,10 +69,10 @@
     </section>
 
     <!-- Main App Structure (Hidden Initially) -->
-    <section id="main-app" class="h-full w-full flex flex-col hidden">
+    <section id="main-app" class="h-full w-full flex flex-col hidden relative">
         
         <!-- Header -->
-        <header class="bg-[#673ab7] text-white p-4 shadow-md flex justify-between items-center z-10 shrink-0">
+        <header class="bg-[#673ab7] text-white p-4 shadow-md flex justify-between items-center z-10 shrink-0 sticky top-0">
             <div class="w-10"></div> <!-- Spacer for center alignment -->
             <h1 id="header-title" class="font-bold text-lg font-open-sans">Enquiry Screen</h1>
             <button id="profile-btn" class="w-8 h-8 rounded-full bg-white overflow-hidden border-2 border-white">
@@ -81,7 +81,7 @@
         </header>
 
         <!-- Content Area -->
-        <main id="content-area" class="flex-grow overflow-y-auto bg-gray-100 p-4 relative">
+        <main id="content-area" class="flex-grow overflow-y-auto bg-gray-100 p-4 pb-24 relative">
             
             <!-- Enquiry Section -->
             <div id="enquiry-section" class="screen-section">
@@ -111,7 +111,7 @@
         </main>
 
         <!-- Bottom Navigation -->
-        <nav class="bg-white border-t border-gray-200 shrink-0">
+        <nav class="bg-white border-t border-gray-200 shrink-0 fixed bottom-0 left-0 w-full z-40 shadow-up">
             <div class="flex justify-around items-center h-16">
                 <!-- Enquiry Tab -->
                 <button onclick="switchTab(0)" class="nav-item flex flex-col items-center justify-center w-full h-full text-[#673ab7]" data-index="0">
