@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RETS App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&family=Open+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDKs are now imported directly in script.js -->
+    
+    <style>
+        body { font-family: 'Open Sans', sans-serif; }
+        .font-abeezee { font-family: 'ABeeZee', sans-serif; }
+        .bg-primary { background-color: #673ab7; }
+        .text-primary { color: #673ab7; }
+        .bg-light-primary { background-color: #d1c4e9; }
+        .text-light-primary { color: #d1c4e9; }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen w-screen overflow-hidden">
+
+    <!-- Login Screen -->
+    <section id="login-screen" class="h-full w-full flex items-center justify-center bg-gray-50">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md mx-4">
+            <div class="flex flex-col items-center mb-8">
+                <div class="w-32 h-32 rounded-full overflow-hidden mb-4 bg-gray-200 flex items-center justify-center">
+                    <!-- Placeholder for Logo if asset not available -->
+                    <img src="web/favicon.png" onerror="this.src='https://via.placeholder.com/150?text=Logo'" alt="Logo" class="w-full h-full object-cover">
+                </div>
+                <h1 class="font-abeezee text-2xl font-bold text-black">RETS Login</h1>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-500 font-abeezee text-sm mb-1">Username or Email</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" id="username" class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#673ab7] focus:ring-1 focus:ring-[#673ab7]" placeholder="Enter username">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-500 font-abeezee text-sm mb-1">Password</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" id="password" class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#673ab7] focus:ring-1 focus:ring-[#673ab7]" placeholder="Enter password">
+                        <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
+                            <i class="fas fa-eye-slash" id="eye-icon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-[#673ab7] text-white font-bold font-abeezee py-2 px-4 rounded-full hover:bg-purple-800 transition duration-200 flex items-center justify-center gap-2">
+                        <i class="fas fa-sign-in-alt text-[#d1c4e9]"></i>
+                        Login
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Main App Structure (Hidden Initially) -->
+    <section id="main-app" class="h-full w-full flex flex-col hidden">
+        
+        <!-- Header -->
+        <header class="bg-[#673ab7] text-white p-4 shadow-md flex justify-between items-center z-10 shrink-0">
+            <div class="w-10"></div> <!-- Spacer for center alignment -->
+            <h1 id="header-title" class="font-bold text-lg font-open-sans">Enquiry Screen</h1>
+            <button id="profile-btn" class="w-8 h-8 rounded-full bg-white overflow-hidden border-2 border-white">
+                 <img src="https://img.freepik.com/premium-vector/avatar-profile-icon-flat-style-male-user-profile-vector-illustration-isolated-background-man-profile-sign-business-concept_157943-38764.jpg" alt="Profile" class="w-full h-full object-cover">
+            </button>
+        </header>
+
+        <!-- Content Area -->
+        <main id="content-area" class="flex-grow overflow-y-auto bg-gray-100 p-4 relative">
+            
+            <!-- Enquiry Section -->
+            <div id="enquiry-section" class="screen-section">
+                <!-- FAB -->
+                <button type="button" id="fab-add-enquiry" class="fixed bottom-20 right-4 bg-[#673ab7] text-white p-4 rounded-full shadow-lg hover:bg-purple-800 transition z-20">
+                    <i class="fas fa-plus"></i>
+                </button>
+                
+                <!-- Content will be loaded here -->
+                <div class="text-center text-gray-500 mt-10" id="enquiry-loading">
+                    <p>Enquiry List Loading...</p>
+                </div>
+            </div>
+
+            <!-- Inventory Section -->
+            <div id="inventory-section" class="screen-section hidden">
+                <h2 class="text-xl font-bold mb-4">Inventory</h2>
+                <!-- Towers/Units Grid -->
+            </div>
+
+            <!-- Booking Section -->
+            <div id="booking-section" class="screen-section hidden">
+                <h2 class="text-xl font-bold mb-4">Bookings</h2>
+                <!-- Booking List -->
+            </div>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bg-white border-t border-gray-200 shrink-0">
+            <div class="flex justify-around items-center h-16">
+                <!-- Enquiry Tab -->
+                <button onclick="switchTab(0)" class="nav-item flex flex-col items-center justify-center w-full h-full text-[#673ab7]" data-index="0">
+                    <i class="far fa-comment-alt text-xl mb-1"></i>
+                    <span class="text-xs font-medium">Enquiry</span>
+                </button>
+
+                <!-- Inventory Tab -->
+                <button onclick="switchTab(1)" class="nav-item flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-[#673ab7]" data-index="1">
+                    <i class="fas fa-list text-xl mb-1"></i>
+                    <span class="text-xs font-medium">Inventory</span>
+                </button>
+
+                <!-- Booking Tab -->
+                <button onclick="switchTab(2)" class="nav-item flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-[#673ab7]" data-index="2">
+                    <i class="fas fa-handshake text-xl mb-1"></i>
+                    <span class="text-xs font-medium">Booking</span>
+                </button>
+            </div>
+        </nav>
+    </section>
+
+    <!-- Post Enquiry Modal -->
+    <div id="add-enquiry-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded-lg w-11/12 max-w-md max-h-[90vh] overflow-y-auto">
+            <h2 class="text-xl font-bold font-abeezee mb-4">Add Enquiry</h2>
+            <form id="add-enquiry-form" class="space-y-3">
+                <input type="text" id="add-name" name="name" placeholder="Full Name" class="w-full border p-2 rounded" required>
+                <input type="tel" id="add-contact" name="contact" placeholder="Contact Number" class="w-full border p-2 rounded" required>
+                <input type="text" id="add-source" name="source" placeholder="Source (e.g., Facebook)" class="w-full border p-2 rounded">
+                <input type="text" id="add-requirement" name="requirement" placeholder="Requirement (e.g., 2 BHK)" class="w-full border p-2 rounded">
+                <div class="flex gap-2 pt-2">
+                    <button type="button" id="close-modal-btn" class="flex-1 bg-gray-200 text-gray-800 py-2 rounded">Cancel</button>
+                    <button type="submit" class="flex-1 bg-[#673ab7] text-white py-2 rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification (Hidden) -->
+    <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-2 rounded shadow-lg hidden transition-opacity duration-300 z-50">
+        Message
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
