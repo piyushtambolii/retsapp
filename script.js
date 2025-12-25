@@ -489,7 +489,8 @@ async function loadEnquiries() {
   enquiries.forEach((enq) => {
      const card = document.createElement("div");
       card.className =
-        "bg-white p-4 mb-3 rounded-lg shadow-sm border-l-4 border-[#673ab7]";
+        "bg-white p-4 mb-3 rounded-lg shadow-sm border-l-4 border-[#673ab7] cursor-pointer";
+      card.onclick = () => openEnquiryDetail(enq.id);
       card.innerHTML = `
                 <div class="flex justify-between items-start">
                     <div>
@@ -640,7 +641,7 @@ async function loadBookings() {
     if (bk.status === "Pending") statusColor = "bg-yellow-100 text-yellow-700";
 
     mobileContainer.innerHTML += `
-            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
+            <div class="bg-white p-4 rounded-lg shadow border-l-4 border-green-500 cursor-pointer" onclick="openBookingDetail('${bk.id}')">
                 <div class="flex justify-between items-start mb-2">
                     <h3 class="font-bold text-gray-800">${
                       bk.applicantName || "Applicant"
