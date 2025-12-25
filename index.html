@@ -41,7 +41,7 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
                             <i class="fas fa-user"></i>
                         </span>
-                        <input type="text" id="username" class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#673ab7] focus:ring-1 focus:ring-[#673ab7]" placeholder="Enter username">
+                        <input type="text" id="username" class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#673ab7] focus:ring-1 focus:ring-[#673ab7]" placeholder="Enter username" value="demo@rets.com">
                     </div>
                 </div>
 
@@ -51,7 +51,7 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">
                             <i class="fas fa-lock"></i>
                         </span>
-                        <input type="password" id="password" class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#673ab7] focus:ring-1 focus:ring-[#673ab7]" placeholder="Enter password">
+                        <input type="password" id="password" class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#673ab7] focus:ring-1 focus:ring-[#673ab7]" placeholder="Enter password" value="demo123">
                         <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">
                             <i class="fas fa-eye-slash" id="eye-icon"></i>
                         </button>
@@ -71,22 +71,42 @@
     <!-- Main App Structure (Hidden Initially) -->
     <section id="main-app" class="h-full w-full flex flex-col hidden relative">
         
-        <!-- Header -->
+    <!-- Header -->
         <header class="bg-[#673ab7] text-white p-4 shadow-md flex justify-between items-center z-10 shrink-0 sticky top-0">
-            <div class="w-10"></div> <!-- Spacer for center alignment -->
-            <h1 id="header-title" class="font-bold text-lg font-open-sans">Enquiry Screen</h1>
+            <!-- Logo / Spacer -->
+            <div class="w-10 md:w-auto flex items-center gap-2">
+                <i class="fas fa-building md:text-xl"></i>
+                <span class="hidden md:block text-xl font-bold font-abeezee tracking-wide">RETS App</span>
+            </div>
+
+            <!-- Mobile Title (Hidden on Desktop) -->
+            <h1 id="header-title" class="font-bold text-lg font-open-sans md:hidden">Enquiry Screen</h1>
+
+            <!-- Desktop Navigation (Hidden on Mobile) -->
+            <nav class="hidden md:flex items-center gap-8">
+                <button onclick="switchTab(0)" class="desktop-nav-item text-white border-b-2 border-white font-bold py-1 transition-all" data-index="0">
+                    Enquiries
+                </button>
+                <button onclick="switchTab(1)" class="desktop-nav-item text-white/80 hover:text-white font-medium border-b-2 border-transparent py-1 transition-all" data-index="1">
+                    Inventory
+                </button>
+                <button onclick="switchTab(2)" class="desktop-nav-item text-white/80 hover:text-white font-medium border-b-2 border-transparent py-1 transition-all" data-index="2">
+                    Bookings
+                </button>
+            </nav>
+
             <button id="profile-btn" class="w-8 h-8 rounded-full bg-white overflow-hidden border-2 border-white">
                  <img src="https://img.freepik.com/premium-vector/avatar-profile-icon-flat-style-male-user-profile-vector-illustration-isolated-background-man-profile-sign-business-concept_157943-38764.jpg" alt="Profile" class="w-full h-full object-cover">
             </button>
         </header>
 
         <!-- Content Area -->
-        <main id="content-area" class="flex-grow overflow-y-auto bg-gray-100 p-4 pb-24 relative">
+        <main id="content-area" class="flex-grow overflow-y-auto bg-gray-100 p-4 pb-24 md:pb-4 relative max-w-7xl mx-auto w-full">
             
             <!-- Enquiry Section -->
             <div id="enquiry-section" class="screen-section">
                 <!-- FAB -->
-                <button type="button" id="fab-add-enquiry" class="fixed bottom-20 right-4 bg-[#673ab7] text-white p-4 rounded-full shadow-lg hover:bg-purple-800 transition z-20">
+                <button type="button" id="fab-add-enquiry" class="fixed bottom-20 right-4 md:bottom-8 md:right-8 bg-[#673ab7] text-white p-4 rounded-full shadow-lg hover:bg-purple-800 transition z-20 transform hover:scale-105">
                     <i class="fas fa-plus"></i>
                 </button>
                 
@@ -96,22 +116,380 @@
                 </div>
             </div>
 
+            <!-- Enquiry Detail View (Hidden Initially) -->
+            <div id="enquiry-detail-view" class="screen-section hidden h-[calc(100vh-80px)]">
+               <!-- Breadcrumb / Back -->
+               <div class="mb-4 flex items-center gap-2">
+                    <button onclick="closeEnquiryDetail()" class="text-gray-500 hover:text-[#673ab7] flex items-center gap-1 text-sm font-bold">
+                        <i class="fas fa-arrow-left"></i> Back to Enquiries
+                    </button>
+               </div>
+               
+               <!-- Main Layout Split -->
+               <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-full">
+                    
+                    <!-- Left Panel: Info (4 cols) -->
+                    <div class="md:col-span-4 bg-white rounded-lg shadow-sm border border-gray-200 p-6 overflow-y-auto">
+                        <!-- Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">🇮🇳</span> <!-- Flag placeholder -->
+                                <div>
+                                    <p class="text-xs text-gray-400 font-mono" id="detail-id">#14211</p>
+                                    <h2 class="text-lg font-bold text-gray-800" id="detail-name">Jaya Prakash</h2>
+                                </div>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-bold text-xs shadow-sm">
+                                0
+                            </div>
+                        </div>
+
+                        <!-- Read Only Banner -->
+                        <div class="bg-blue-50 text-blue-800 text-xs p-3 rounded mb-6 border border-blue-100">
+                            You do not have access to make any changes to this lead. <br>
+                            Lead assigned to Abhishek VR
+                        </div>
+
+                        <!-- Score & Status -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="relative w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center border-4 border-green-500">
+                                <span class="text-lg font-bold text-gray-700">23</span>
+                            </div>
+                             <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">STAGE & STATUS</p>
+                                <span class="px-3 py-1 bg-purple-100 text-[#673ab7] rounded text-xs font-bold border border-purple-200" id="detail-status">Prospect •</span>
+                            </div>
+                        </div>
+
+                        <!-- Key Details Grid -->
+                        <div class="grid grid-cols-2 gap-y-6 gap-x-2 text-sm">
+                            <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">RECEIVED ON</p>
+                                <p class="font-medium text-gray-700" id="detail-date">Wed, Dec 9, 2020</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">LAST CONTACTED AT</p>
+                                <p class="font-medium text-gray-700">Yesterday at 5:48 PM</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">tags</p>
+                                <div class="flex flex-wrap gap-1">
+                                    <span class="text-xs text-gray-600 bg-gray-100 px-1 rounded">Hotness</span>
+                                    <span class="text-xs text-gray-600 bg-gray-100 px-1 rounded">Campaign</span>
+                                </div>
+                            </div>
+                             <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">PHONE VERIFIED</p>
+                                <p class="font-medium text-gray-700">No</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">OWNER</p>
+                                <p class="font-medium text-gray-700">Abhishek VR</p>
+                            </div>
+                             <div>
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">LAST CALL</p>
+                                <p class="font-medium text-gray-700">-</p>
+                            </div>
+                            <div class="col-span-2">
+                                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-1">INTERESTED PRODUCTS</p>
+                                <p class="font-medium text-gray-700" id="detail-requirement">Sell.Do For Developers</p>
+                            </div>
+                        </div>
+
+                         <!-- Mobile Quick Actions (Tasks) -->
+                         <div class="mt-8 pt-4 border-t border-gray-100">
+                             <div class="bg-gray-50 p-3 rounded flex items-center justify-between">
+                                 <div class="flex items-center gap-2 text-gray-600">
+                                     <i class="fas fa-tasks"></i>
+                                     <span class="font-bold text-sm">Tasks</span>
+                                 </div>
+                                 <div class="flex gap-2">
+                                     <span class="text-xs font-bold text-gray-500">Add A Task</span>
+                                     <button class="text-[#673ab7] text-xs font-bold bg-white border px-2 rounded">Open</button>
+                                 </div>
+                             </div>
+                         </div>
+
+                    </div>
+                    
+                    <!-- Right Panel: Timeline (8 cols) -->
+                    <div class="md:col-span-8 flex flex-col gap-4 h-full overflow-hidden">
+                        
+                        <!-- Top Actions -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-2">
+                            <div class="flex items-center gap-4 text-sm font-bold text-gray-600 px-2 py-1">
+                                <div class="flex items-center gap-2"><i class="fas fa-briefcase"></i> Document</div>
+                            </div>
+                            <div class="border-t border-gray-100 mt-2 pt-2 px-2 py-1 flex items-center gap-2 text-sm font-bold text-gray-600">
+                                <i class="fas fa-code-branch rotate-90"></i> Merge Leads
+                            </div>
+                        </div>
+
+                        <!-- Timeline Tabs -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col flex-grow overflow-hidden">
+                            <!-- Tabs Header -->
+                            <div class="flex items-center justify-between border-b border-gray-200 px-4 pt-4">
+                                <nav class="flex gap-6">
+                                    <button class="pb-3 border-b-2 border-[#673ab7] text-[#673ab7] font-bold text-sm">Activity</button>
+                                    <button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-bold text-sm">Notes</button>
+                                    <button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-bold text-sm">Calls</button>
+                                    <button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-bold text-sm">Meeting</button>
+                                    <button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-bold text-sm">More <i class="fas fa-caret-down"></i></button>
+                                </nav>
+                                <div class="pb-2">
+                                     <select class="bg-gray-50 border border-gray-200 rounded text-xs px-2 py-1 text-gray-600 outline-none">
+                                        <option>Filter</option>
+                                     </select>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Content -->
+                            <div class="flex-grow overflow-y-auto p-6 bg-gray-50 relative">
+                                <!-- Vertical Line -->
+                                <div class="absolute left-10 top-6 bottom-0 w-0.5 bg-gray-200 z-0"></div>
+
+                                <!-- Timeline Item 1 -->
+                                <div class="relative z-10 pl-10 mb-6">
+                                    <div class="absolute left-[34px] top-1 w-3 h-3 bg-white border-2 border-gray-300 rounded-full"></div>
+                                    <div class="bg-white border boundary-gray-200 rounded p-4 shadow-sm">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <p class="text-sm font-bold text-gray-700"><i class="far fa-clock text-gray-400 mr-2"></i> A followup call is scheduled on 14/12/2020, 03:00 PM</p>
+                                            <i class="fas fa-ellipsis-v text-gray-400 cursor-pointer"></i>
+                                        </div>
+                                        <div class="flex justify-between items-end mt-4 text-xs text-gray-400">
+                                            <span>Today at 12:39 AM | Abhishek VR</span>
+                                            <span class="uppercase">Scheduled</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Timeline Item 2 -->
+                                <div class="relative z-10 pl-10 mb-6">
+                                    <div class="absolute left-[34px] top-1 w-3 h-3 bg-white border-2 border-gray-300 rounded-full"></div>
+                                    <div class="bg-white border boundary-gray-200 rounded p-4 shadow-sm">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <p class="text-sm font-bold text-gray-700"><i class="fas fa-file-alt text-gray-400 mr-2"></i> Lead Hotness was updated from 13 to 23 via a workflow trigger.</p>
+                                        </div>
+                                        <div class="flex justify-between items-end mt-4 text-xs text-gray-400">
+                                            <span>Yesterday at 5:08 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                 <!-- Timeline Item 3 -->
+                                <div class="relative z-10 pl-10 mb-6">
+                                    <div class="absolute left-[34px] top-1 w-3 h-3 bg-white border-2 border-gray-300 rounded-full"></div>
+                                    <div class="bg-white border boundary-gray-200 rounded p-4 shadow-sm">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <p class="text-sm font-bold text-gray-700"><i class="far fa-clock text-gray-400 mr-2"></i> A followup call was conducted on 11/12/2020, 05:48 PM</p>
+                                            <i class="fas fa-ellipsis-v text-gray-400 cursor-pointer"></i>
+                                        </div>
+                                         <div class="flex justify-between items-end mt-4 text-xs text-gray-400">
+                                            <span>Thu, Dec 10, 2020 4:40 PM | Abhishek VR</span>
+                                            <span class="uppercase">Conducted</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+               </div>
+            </div>
+
             <!-- Inventory Section -->
             <div id="inventory-section" class="screen-section hidden">
-                <h2 class="text-xl font-bold mb-4">Inventory</h2>
+                <h2 class="text-xl font-bold mb-4 md:hidden">Inventory</h2> <!-- Hide title on desktop as it's in nav/header context usually, or keep it. Let's keep consistency with plan -->
+                <!-- Desktop Title could be added inside render function if needed, but for now header title serves purpose on mobile. On desktop, maybe we want a sub-header or just the content. -->
                 <!-- Towers/Units Grid -->
+            </div>
+
+            <!-- Inventory Detail View (Hidden Initially) -->
+            <div id="inventory-detail-view" class="screen-section hidden h-full pb-20 md:pb-0">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-4">
+                    <button onclick="closeTowerDetail()" class="text-gray-500 hover:text-[#673ab7] flex items-center gap-1 text-sm font-bold">
+                        <i class="fas fa-arrow-left"></i> Back to Towers
+                    </button>
+                    <div class="flex gap-4 text-xs">
+                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-green-100 border border-green-500 rounded-sm block"></span> Available</span>
+                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-red-100 border border-red-500 rounded-sm block"></span> Sold</span>
+                         <span class="flex items-center gap-1"><span class="w-3 h-3 bg-gray-100 border border-gray-400 rounded-sm block"></span> Blocked</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1" id="inv-detail-title">Tower A</h2>
+                    <p class="text-sm text-gray-500 mb-6" id="inv-detail-subtitle">Total: 50 | Available: 12</p>
+                    
+                    <!-- Unit Grid -->
+                    <div id="unit-grid-container" class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-10 gap-3">
+                        <!-- Units Rendered Here -->
+                    </div>
+                </div>
             </div>
 
             <!-- Booking Section -->
             <div id="booking-section" class="screen-section hidden">
-                <h2 class="text-xl font-bold mb-4">Bookings</h2>
+                <h2 class="text-xl font-bold mb-4 md:hidden">Bookings</h2>
                 <!-- Booking List -->
             </div>
 
+            <!-- Booking Detail View (Hidden Initially) -->
+             <div id="booking-detail-view" class="screen-section hidden h-full pb-20 md:pb-0">
+                <!-- Back Header -->
+                 <div class="mb-4 flex items-center gap-2">
+                    <button onclick="closeBookingDetail()" class="text-gray-500 hover:text-[#673ab7] flex items-center gap-1 text-sm font-bold">
+                        <i class="fas fa-arrow-left"></i> Back to Bookings
+                    </button>
+               </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                    
+                    <!-- Left Panel: Booking Info -->
+                    <div class="md:col-span-5 bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+                        <!-- Header Info -->
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-xs text-gray-400 font-mono mb-1">BOOKING ID</p>
+                                <h1 class="text-xl font-bold text-gray-800" id="bk-detail-id">#BK001</h1>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 uppercase" id="bk-detail-status">Confirmed</span>
+                        </div>
+
+                        <!-- Applicant Info -->
+                        <div class="border-t pt-4">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Applicant Details</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 text-sm">Name</span>
+                                    <span class="font-medium text-gray-800 text-sm" id="bk-detail-name">Suresh Kumar</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 text-sm">Contact</span>
+                                    <span class="font-medium text-gray-800 text-sm">+91 9876543210</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 text-sm">Email</span>
+                                    <span class="font-medium text-gray-800 text-sm">suresh@example.com</span>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- Unit Info -->
+                        <div class="border-t pt-4">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Unit Details</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 text-sm">Unit No</span>
+                                    <span class="font-medium text-gray-800 text-sm" id="bk-detail-unit">A-101</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 text-sm">Tower</span>
+                                    <span class="font-medium text-gray-800 text-sm">Tower A (Sunflower)</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 text-sm">Type</span>
+                                    <span class="font-medium text-gray-800 text-sm">3 BHK</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500 text-sm">Carpet Area</span>
+                                    <span class="font-medium text-gray-800 text-sm">1250 sq.ft</span>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- Financials -->
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                             <div class="flex justify-between items-center mb-2">
+                                <span class="text-gray-500 text-sm">Agreement Value</span>
+                                <span class="font-bold text-gray-800" id="bk-detail-amount">₹ 75,00,000</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-500 text-sm">Paid Amount</span>
+                                <span class="font-bold text-green-600">₹ 7,50,000 (10%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Panel: Payment Schedule -->
+                    <div class="md:col-span-7 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-lg font-bold text-gray-800">Payment Schedule</h2>
+                            <button class="text-xs bg-[#673ab7] text-white px-3 py-1.5 rounded hover:bg-purple-800">
+                                <i class="fas fa-download mr-1"></i> Download
+                            </button>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-left text-sm">
+                                <thead>
+                                    <tr class="border-b bg-gray-50">
+                                        <th class="py-2 px-3 font-medium text-gray-500">Milestone</th>
+                                        <th class="py-2 px-3 font-medium text-gray-500">Due Date</th>
+                                        <th class="py-2 px-3 font-medium text-gray-500">Amount</th>
+                                        <th class="py-2 px-3 font-medium text-gray-500">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y">
+                                    <tr>
+                                        <td class="py-3 px-3">Booking Amount</td>
+                                        <td class="py-3 px-3">01 Nov 2023</td>
+                                        <td class="py-3 px-3">₹ 5,00,000</td>
+                                        <td class="py-3 px-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">Paid</span></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="py-3 px-3">Agreement Signing</td>
+                                        <td class="py-3 px-3">15 Nov 2023</td>
+                                        <td class="py-3 px-3">₹ 2,50,000</td>
+                                        <td class="py-3 px-3"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">Paid</span></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="py-3 px-3">Plinth Level</td>
+                                        <td class="py-3 px-3">10 Jan 2024</td>
+                                        <td class="py-3 px-3">₹ 15,00,000</td>
+                                        <td class="py-3 px-3"><span class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs font-bold">Due Soon</span></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="py-3 px-3">1st Slab</td>
+                                        <td class="py-3 px-3">15 Mar 2024</td>
+                                        <td class="py-3 px-3">₹ 10,00,000</td>
+                                        <td class="py-3 px-3"><span class="bg-gray-100 text-gray-500 px-2 py-0.5 rounded text-xs font-bold">Pending</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Documents Section -->
+                         <div class="mt-8">
+                             <h2 class="text-lg font-bold text-gray-800 mb-4">Documents</h2>
+                             <div class="grid grid-cols-2 gap-4">
+                                 <div class="border rounded p-3 flex items-center gap-3 hover:bg-gray-50 cursor-pointer">
+                                     <i class="fas fa-file-pdf text-red-500 text-2xl"></i>
+                                     <div>
+                                         <p class="text-sm font-medium">Booking Form.pdf</p>
+                                         <p class="text-xs text-gray-400">2.5 MB • 01 Nov 2023</p>
+                                     </div>
+                                 </div>
+                                  <div class="border rounded p-3 flex items-center gap-3 hover:bg-gray-50 cursor-pointer">
+                                     <i class="fas fa-file-contract text-blue-500 text-2xl"></i>
+                                     <div>
+                                         <p class="text-sm font-medium">Agreement.pdf</p>
+                                         <p class="text-xs text-gray-400">4.8 MB • 15 Nov 2023</p>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+                    </div>
+                </div>
+             </div>
+
         </main>
 
-        <!-- Bottom Navigation -->
-        <nav class="bg-white border-t border-gray-200 shrink-0 fixed bottom-0 left-0 w-full z-40 shadow-up">
+        <!-- Bottom Navigation (Hidden on Desktop) -->
+        <nav class="bg-white border-t border-gray-200 shrink-0 fixed bottom-0 left-0 w-full z-40 shadow-up md:hidden">
             <div class="flex justify-around items-center h-16">
                 <!-- Enquiry Tab -->
                 <button onclick="switchTab(0)" class="nav-item flex flex-col items-center justify-center w-full h-full text-[#673ab7]" data-index="0">
